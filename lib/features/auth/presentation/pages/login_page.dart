@@ -97,7 +97,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     const SizedBox(height: 24),
                     Row(children: [Expanded(child: Divider(color: Theme.of(context).dividerColor)), Padding(padding: const EdgeInsets.symmetric(horizontal: 16), child: SumePortText('or', style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant))), Expanded(child: Divider(color: Theme.of(context).dividerColor))]),
                     const SizedBox(height: 24),
-                    OutlinedButton.icon(onPressed: isLoading ? null : () => _showMessage('Google sign-in will be connected soon.'), icon: const Icon(Icons.g_mobiledata, size: 28), label: const Text('Continue with Google')),
+                    OutlinedButton.icon(onPressed: isLoading ? null : () => ref.read(authProvider.notifier).signInWithGoogle(), icon: const Icon(Icons.g_mobiledata, size: 28), label: const Text('Continue with Google')),
                     const SizedBox(height: 28),
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [SumePortText("Don't have an account? ", style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)), TextButton(onPressed: isLoading ? null : () => context.go('/signup'), child: const Text('Create account'))]),
                     const SizedBox(height: 24),

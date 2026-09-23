@@ -5,6 +5,7 @@ class AuthResponse {
     required this.userId,
     required this.email,
     required this.emailVerified,
+    this.provider = 'email',
   });
 
   final String accessToken;
@@ -23,6 +24,7 @@ class AuthResponse {
       email: json['email'] as String,
       emailVerified:
           json['email_verified'] as bool? ?? false,
+      provider: json['provider'] as String? ?? 'email',
     );
   }
 }

@@ -203,6 +203,7 @@ class AuthNotifier extends Notifier<AuthState> {
           userId: user.id,
           email: email,
           emailVerified: emailVerified,
+          provider: 'google',
         ),
       );
     } catch (_) {

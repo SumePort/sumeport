@@ -19,3 +19,4 @@ class AuthResponse(BaseModel):
     user_id: str
     email: str
     email_verified: bool
+    provider: str = "email"

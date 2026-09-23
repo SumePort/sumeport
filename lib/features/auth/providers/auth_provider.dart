@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthResponse, LocalStorage;
 
 import '../../../core/network/network_client.dart';
 import '../../../core/storage/local_storage.dart';
@@ -76,9 +76,7 @@ class AuthNotifier extends Notifier<AuthState> {
     );
 
     if (SupabaseConfig.isConfigured) {
-      _googleRepository = GoogleAuthRepository(
-        localStorage: storage,
-      );
+      _googleRepository = const GoogleAuthRepository();
 
       _supabaseAuthSubscription = Supabase
           .instance.client.auth.onAuthStateChange

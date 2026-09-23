@@ -13,6 +13,7 @@ class AuthResponse {
   final String userId;
   final String email;
   final bool emailVerified;
+  final String provider;
 
   factory AuthResponse.fromJson(
     Map<String, dynamic> json,

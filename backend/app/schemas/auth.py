@@ -18,3 +18,4 @@ class AuthResponse(BaseModel):
     token_type: str = "bearer"
     user_id: str
     email: str
+    email_verified: bool

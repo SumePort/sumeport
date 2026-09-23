@@ -77,12 +77,17 @@ class AuthService:
                     detail="Invalid email or password.",
                 )
 
+            provider = str(
+                (user.app_metadata or {}).get("provider") or "email"
+            )
+
             return AuthResponse(
                 access_token=session.access_token,
                 refresh_token=session.refresh_token,
                 user_id=str(user.id),
                 email=user.email or email,
                 email_verified=user.email_confirmed_at is not None,
+                provider=provider,
             )
 
         except HTTPException:

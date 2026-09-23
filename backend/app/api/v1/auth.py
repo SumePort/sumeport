@@ -28,8 +28,12 @@ async def login(request: LoginRequest):
 
 @router.get("/me")
 async def get_me(current_user=Depends(get_current_user)):
+    app_metadata = current_user.app_metadata or {}
+    auth_provider = str(app_metadata.get("provider") or "email")
+
     return {
         "user_id": str(current_user.id),
         "email": current_user.email,
         "email_verified": current_user.email_confirmed_at is not None,
+        "provider": auth_provider,
     }

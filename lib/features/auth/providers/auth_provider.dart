@@ -58,7 +58,7 @@ class AuthState {
 class AuthNotifier extends Notifier<AuthState> {
   late final AuthRepository _repository;
   GoogleAuthRepository? _googleRepository;
-  StreamSubscription<AuthState>?
+  StreamSubscription<dynamic>?
       _supabaseAuthSubscription;
 
   @override

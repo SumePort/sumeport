@@ -1,7 +1,12 @@
 from fastapi import APIRouter, Depends
 
 from app.core.security import get_current_user
-from app.schemas.auth import AuthResponse, LoginRequest, SignUpRequest
+from app.schemas.auth import (
+    AuthResponse,
+    ForgotPasswordRequest,
+    LoginRequest,
+    SignUpRequest,
+)
 from app.services.auth_service import AuthService
 
 
@@ -26,8 +31,21 @@ async def login(request: LoginRequest):
     )
 
 
+@router.post("/forgot-password")
+async def forgot_password(request: ForgotPasswordRequest):
+    await auth_service.request_password_reset(request.email)
+
+    # Keep the response generic so the endpoint does not reveal whether
+    # an email address exists in the authentication database.
+    return {
+        "message": "If an account exists for this email, a password reset email has been sent."
+    }
+
+
 @router.get("/me")
 async def get_me(current_user=Depends(get_current_user)):
+    await auth_service.get_or_create_profile_for_user(current_user)
+
     app_metadata = current_user.app_metadata or {}
     auth_provider = str(app_metadata.get("provider") or "email")
 

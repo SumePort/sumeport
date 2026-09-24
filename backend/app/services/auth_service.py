@@ -30,6 +30,12 @@ class AuthService:
                     detail="Unable to create account.",
                 )
 
+            await self.repository.ensure_profile(
+                user_id=str(user.id),
+                email=user.email,
+                full_name=full_name,
+            )
+
             return {
                 "message": (
                     "Account created. "
@@ -77,6 +83,12 @@ class AuthService:
                     detail="Invalid email or password.",
                 )
 
+            await self.repository.ensure_profile(
+                user_id=str(user.id),
+                email=user.email or email,
+                full_name=(user.user_metadata or {}).get("full_name"),
+            )
+
             provider = str(
                 (user.app_metadata or {}).get("provider") or "email"
             )
@@ -97,4 +109,21 @@ class AuthService:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail=str(exc),
+            ) from exc
+
+    async def get_or_create_profile_for_user(self, user) -> None:
+        await self.repository.ensure_profile(
+            user_id=str(user.id),
+            email=user.email,
+            full_name=(user.user_metadata or {}).get("full_name")
+            or (user.user_metadata or {}).get("name"),
+        )
+
+    async def request_password_reset(self, email: str) -> None:
+        try:
+            await self.repository.request_password_reset(email)
+        except Exception as exc:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Unable to process the password reset request.",
             ) from exc
